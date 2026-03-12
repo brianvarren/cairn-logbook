@@ -4,14 +4,174 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAIRN Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
+    /* Dark theme for Decap CMS */
     body {
       background: #0a0a09;
+    }
+
+    /* Main app container */
+    [data-decap-cms-root] {
+      --accent-color: #706b62;
+    }
+
+    /* Override the default light styles */
+    .css-1ksear5-StyledAuthenticationPage,
+    .css-hxoo75-AppMainContainer,
+    [class*="AppMainContainer"],
+    [class*="StyledAuthenticationPage"] {
+      background: #0a0a09 !important;
+    }
+
+    /* Sidebar */
+    [class*="Sidebar"],
+    nav[class*="css"] {
+      background: #0d0d0c !important;
+      border-right: 1px solid #1f1e1c !important;
+    }
+
+    /* Cards and panels */
+    [class*="Card"],
+    [class*="ListCard"],
+    [class*="ControlPane"],
+    [class*="PreviewPane"] {
+      background: #0d0d0c !important;
+      border-color: #1f1e1c !important;
+    }
+
+    /* Text */
+    [class*="css"] h1,
+    [class*="css"] h2,
+    [class*="css"] label,
+    [class*="css"] span,
+    [class*="css"] p,
+    [class*="css"] a {
+      color: #9a958a !important;
+    }
+
+    /* Inputs and textareas */
+    input, textarea, [contenteditable="true"] {
+      background: #0a0a09 !important;
+      border: 1px solid #1f1e1c !important;
+      color: #9a958a !important;
+      font-family: "Special Elite", "Courier New", monospace !important;
+    }
+
+    /* Buttons */
+    button {
+      background: #1a1918 !important;
+      border: 1px solid #2a2826 !important;
+      color: #7a756c !important;
+    }
+
+    button:hover {
+      background: #1f1e1c !important;
+      color: #8a857c !important;
+    }
+
+    /* Editor toolbar */
+    [class*="Toolbar"] {
+      background: #0d0d0c !important;
+      border-color: #1f1e1c !important;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0a0a09;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2a2826;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3a3836;
     }
   </style>
 </head>
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    // Register preview styles to match the site
+    CMS.registerPreviewStyle("/css/style.css");
+    
+    // Custom preview template for posts
+    const PostPreview = createClass({
+      render: function() {
+        const entry = this.props.entry;
+        const title = entry.getIn(['data', 'title']) || '';
+        const body = this.props.widgetFor('body');
+        const date = entry.getIn(['data', 'date']);
+        
+        let dateStr = '';
+        if (date) {
+          const d = new Date(date);
+          const day = String(d.getDate()).padStart(2, '0');
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const year = String(d.getFullYear()).slice(-2);
+          const hours = String(d.getHours()).padStart(2, '0');
+          const mins = String(d.getMinutes()).padStart(2, '0');
+          dateStr = `${day}.${month}.${year}  ${hours}${mins}`;
+        }
+
+        return h('div', { 
+          style: { 
+            background: '#0a0a09', 
+            minHeight: '100vh',
+            padding: '40px 20px',
+            fontFamily: '"Special Elite", "Courier New", monospace',
+            color: '#9a958a',
+            fontSize: '14px',
+            lineHeight: '1.6'
+          }
+        },
+          h('div', { style: { maxWidth: '600px', margin: '0 auto' } },
+            h('article', { className: 'post' },
+              h('header', { 
+                style: { 
+                  marginBottom: '32px',
+                  paddingBottom: '24px',
+                  borderBottom: '1px solid #1f1e1c'
+                }
+              },
+                h('div', { 
+                  style: { 
+                    fontSize: '11px',
+                    color: '#4a4740',
+                    letterSpacing: '0.05em',
+                    marginBottom: '12px'
+                  }
+                }, dateStr),
+                h('h1', { 
+                  style: { 
+                    fontSize: '16px',
+                    fontWeight: 'normal',
+                    color: '#9a958a',
+                    margin: 0
+                  }
+                }, title)
+              ),
+              h('div', { 
+                className: 'post-content',
+                style: { color: '#8a857c' }
+              }, body)
+            )
+          )
+        );
+      }
+    });
+
+    CMS.registerPreviewTemplate('posts', PostPreview);
+  </script>
 </body>
 </html>
