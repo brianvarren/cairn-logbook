@@ -1,0 +1,21 @@
+---
+layout: base.njk
+title: Field Log
+---
+
+<div class="entries">
+  {% for post in collections.posts %}
+  <article class="entry">
+    <div class="entry-header">
+      <span>{{ loop.revindex | padStart(3) }}</span>
+      <span>{{ post.date | postDate }}</span>
+    </div>
+    <a href="{{ post.url }}" class="entry-link">{{ post.data.title }}</a>
+    {% if post.data.excerpt %}
+    <p class="entry-excerpt">{{ post.data.excerpt }}</p>
+    {% endif %}
+  </article>
+  {% else %}
+  <p class="entry-excerpt">No entries logged.</p>
+  {% endfor %}
+</div>
