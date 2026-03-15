@@ -6,6 +6,11 @@ title: Field Log
 <div class="entries">
   {% for post in collections.posts %}
   <article class="entry">
+    {% if post.data.image %}
+    <a href="{{ post.url }}" class="entry-image-link">
+      <img src="{{ post.data.image }}" alt="{{ post.data.title }}" class="entry-image">
+    </a>
+    {% endif %}
     <div class="entry-header">
       <span>{{ loop.revindex | padStart(3) }}</span>
       <span>{{ post.date | postDate }}</span>

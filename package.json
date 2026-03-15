@@ -1,7 +1,7 @@
 {
-  "name": "cairn-blog",
+  "name": "dead-medium",
   "version": "1.0.0",
-  "description": "CAIRN Field Log",
+  "description": "Dead Medium",
   "scripts": {
     "start": "eleventy --serve",
     "build": "eleventy"
